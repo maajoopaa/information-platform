@@ -10,6 +10,8 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {MatMenu, MatMenuItem} from '@angular/material/menu';
 import {MatButton, MatIconButton} from '@angular/material/button';
+import {CommentsComponent} from '../comments-component/comments-component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-post-component',
@@ -24,10 +26,17 @@ import {MatButton, MatIconButton} from '@angular/material/button';
     MatIconButton,
     MatMenuItem,
     MatCardActions,
-    MatButton
+    MatButton,
+    CommentsComponent,
+    NgIf
   ],
   templateUrl: './post-component.html',
   styleUrl: './post-component.scss',
 })
 export class PostComponent {
+  public isCommentsExpanded: boolean = false;
+
+  onCommentsButtonClick(){
+    this.isCommentsExpanded = !this.isCommentsExpanded;
+  }
 }

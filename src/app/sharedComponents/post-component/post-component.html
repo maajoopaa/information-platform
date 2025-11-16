@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card style="max-width: 600px" class="mx-auto">
 
   <mat-card-header>
     <mat-card-title>Иван Иванов</mat-card-title>
@@ -8,10 +8,6 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu>
-      <button mat-menu-item>
-        <mat-icon>edit</mat-icon>
-        <span>Редактировать</span>
-      </button>
       <button mat-menu-item>
         <mat-icon>delete</mat-icon>
         <span>Удалить</span>
@@ -31,11 +27,13 @@
         <mat-icon>thumb_up</mat-icon>
         125
       </button>
-      <button mat-button color="primary">
+      <button mat-button color="primary" (click)="onCommentsButtonClick()">
         <mat-icon>comment</mat-icon>
         23
       </button>
     </div>
   </mat-card-actions>
 
+
+  <app-comments-component *ngIf="isCommentsExpanded"></app-comments-component>
 </mat-card>
