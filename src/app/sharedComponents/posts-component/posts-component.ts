@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import {PostComponent} from '../post-component/post-component';
 import {NgForOf, NgIf} from '@angular/common';
 import {CommentsComponent} from '../comments-component/comments-component';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-posts-component',
   imports: [
     PostComponent,
     NgForOf,
+    MatButton,
+    MatIcon,
   ],
   templateUrl: './posts-component.html',
   styleUrl: './posts-component.scss',
