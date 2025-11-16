@@ -1,43 +1,89 @@
-<div class="row m-0">
-  <div class="gap-2" [ngClass]="isCollapsed ? 'col-2' : 'col-1'">
-    <mat-nav-list>
+<div class="bg-primary text-white p-2">
+  <div class="container-fluid" style="max-width: 80%">
+    <div class="d-flex align-items-center justify-content-between">
 
-      <a mat-list-item routerLink="/home" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>home</mat-icon>
-        <span matListItemTitle>Главная</span>
-      </a>
+      <div class="d-flex align-items-center">
+        <mat-icon class="text-white me-2">public</mat-icon>
+        <h5 class="mb-0 fw-bold">Information platform</h5>
+      </div>
 
-      <a mat-list-item routerLink="/profile" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>person</mat-icon>
-        <span matListItemTitle>Моя страница</span>
-      </a>
+      <div class="ms-1 flex-grow-0" style="max-width: 250px;">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Поиск...">
+          <button class="btn btn-light" type="button">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
 
-      <a mat-list-item routerLink="/chats" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>chat</mat-icon>
-        <span matListItemTitle>Чаты</span>
-      </a>
+      <div class="position-relative">
+        <button mat-icon-button class="text-white" [matMenuTriggerFor]="userMenu">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" class="mt-2">
+          <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <span>Профиль</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Настройки</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Выйти</span>
+          </button>
+        </mat-menu>
+      </div>
 
-      <a mat-list-item routerLink="/friends" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>group</mat-icon>
-        <span matListItemTitle>Друзья</span>
-      </a>
-
-      <a mat-list-item routerLink="/settings" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>settings</mat-icon>
-        <span matListItemTitle>Настройки</span>
-      </a>
-
-      <mat-divider></mat-divider>
-
-      <a mat-list-item routerLink="/quit" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-        <mat-icon matListItemIcon>logout</mat-icon>
-        <span matListItemTitle>Выйти</span>
-      </a>
-
-    </mat-nav-list>
+    </div>
   </div>
-  <div class="d-flex justify-content-center h-100 mt-2" [ngClass]="isCollapsed ? 'col-10' : 'col-11'">
-    <router-outlet></router-outlet>
-<!--    <h1>Hello!</h1>-->
+</div>
+
+<div class="d-flex justify-content-center">
+  <div class="row m-0" style="max-width: 80%">
+    <div class="gap-2 col-2">
+      <mat-nav-list>
+
+        <a mat-list-item routerLink="/home" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>home</mat-icon>
+          <span matListItemTitle>Главная</span>
+        </a>
+
+        <a mat-list-item routerLink="/profile" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>Моя страница</span>
+        </a>
+
+        <a mat-list-item routerLink="/chats" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>chat</mat-icon>
+          <span matListItemTitle>Чаты</span>
+        </a>
+
+        <a mat-list-item routerLink="/friends" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>group</mat-icon>
+          <span matListItemTitle>Друзья</span>
+        </a>
+
+        <a mat-list-item routerLink="/settings" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>settings</mat-icon>
+          <span matListItemTitle>Настройки</span>
+        </a>
+
+        <mat-divider></mat-divider>
+
+        <a mat-list-item routerLink="/quit" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>logout</mat-icon>
+          <span matListItemTitle>Выйти</span>
+        </a>
+
+      </mat-nav-list>
+    </div>
+    <div class="d-flex justify-content-center h-100 mt-2 col-10">
+      <router-outlet></router-outlet>
+      <!--    <h1>Hello!</h1>-->
+    </div>
   </div>
+
 </div>
