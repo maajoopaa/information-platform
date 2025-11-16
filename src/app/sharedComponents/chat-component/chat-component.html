@@ -1,0 +1,22 @@
+<div class="border rounded d-flex flex-column h-100">
+
+  <div class="p-3 border-bottom bg-light">
+    <h5 class="mb-0">Чат с Иваном Ивановым</h5>
+  </div>
+
+  <div class="p-3 overflow-auto flex-grow-1 bg-light">
+    <app-message-component
+      *ngFor="let msg of messages"
+      [message]="msg"
+      [isMyMessage]="msg.isMy">
+    </app-message-component>
+  </div>
+
+  <div class="p-3 border-top">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Введите сообщение...">
+      <button class="btn btn-primary">Отправить</button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,16 @@
+<div class="d-flex mb-3" [class.justify-content-end]="isMyMessage" [class.justify-content-start]="!isMyMessage">
+
+  <div *ngIf="!isMyMessage" class="d-flex align-items-start">
+    <div class="bg-light rounded p-2">
+      <div class="fw-bold small">{{message.author}}</div>
+      <div class="mb-1">{{message.text}}</div>
+      <div class="text-muted small text-end">{{message.time}}</div>
+    </div>
+  </div>
+
+  <div *ngIf="isMyMessage" class="bg-primary text-white rounded p-2">
+    <div class="mb-1">{{message.text}}</div>
+    <div class="small text-end opacity-75">{{message.time}}</div>
+  </div>
+
+</div>
