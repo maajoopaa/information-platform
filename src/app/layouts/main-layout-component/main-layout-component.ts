@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatDivider, MatListItem, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {NgClass} from '@angular/common';
@@ -13,7 +13,8 @@ import {NgClass} from '@angular/common';
     MatListItem,
     RouterLink,
     RouterLinkActive,
-    NgClass
+    NgClass,
+    RouterOutlet
   ],
   templateUrl: './main-layout-component.html',
   styleUrl: './main-layout-component.scss',
