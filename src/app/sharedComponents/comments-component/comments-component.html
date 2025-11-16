@@ -1,0 +1,13 @@
+<div class="border-top">
+  <div class="p-3 border-top">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Напишите комментарий...">
+      <button class="btn btn-primary" type="button">Отправить</button>
+    </div>
+  </div>
+
+  <div class="overflow-auto d-flex flex-column gap-3" style="max-height: 300px;">
+    <app-comment-component *ngFor="let number of numbers">
+    </app-comment-component>
+  </div>
+</div>
