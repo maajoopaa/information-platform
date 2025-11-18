@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="position-relative">
+      <div class="position-relative" *ngIf="isAuthenticated">
         <button mat-icon-button class="text-white" [matMenuTriggerFor]="userMenu">
           <mat-icon>person</mat-icon>
         </button>
@@ -36,6 +36,12 @@
           </button>
         </mat-menu>
       </div>
+      <div class="position-relative" *ngIf="!isAuthenticated">
+        <a mat-list-item routerLink="/login" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+          <mat-icon matListItemIcon>login</mat-icon>
+          <span matListItemTitle>Войти</span>
+        </a>
+      </div>
 
     </div>
   </div>
@@ -51,12 +57,12 @@
           <span matListItemTitle>Главная</span>
         </a>
 
-        <a mat-list-item routerLink="/profile" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+        <a mat-list-item routerLink="/profile" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2" *ngIf="isAuthenticated">
           <mat-icon matListItemIcon>person</mat-icon>
           <span matListItemTitle>Моя страница</span>
         </a>
 
-        <a mat-list-item routerLink="/chats" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+        <a mat-list-item routerLink="/chats" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2" *ngIf="isAuthenticated">
           <mat-icon matListItemIcon>chat</mat-icon>
           <span matListItemTitle>Чаты</span>
         </a>
