@@ -3,6 +3,7 @@
 
 import { UserDto } from '../models/user-dto';
 export interface LikeDto {
+  id?: string;
   createdAt?: string;
   createdBy?: UserDto;
 }

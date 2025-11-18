@@ -3,6 +3,7 @@
 
 import { UserDto } from '../models/user-dto';
 export interface CommentDto {
+  id?: string;
   createdAt?: string;
   createdBy?: UserDto;
   text?: string | null;

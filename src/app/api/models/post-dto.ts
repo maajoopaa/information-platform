@@ -6,6 +6,7 @@ import { ImageDto } from '../models/image-dto';
 import { LikeDto } from '../models/like-dto';
 import { UserDto } from '../models/user-dto';
 export interface PostDto {
+  id?: string;
   bodyHtml?: string | null;
   comments?: Array<CommentDto> | null;
   createdBy?: UserDto;
