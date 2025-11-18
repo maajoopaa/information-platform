@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <mat-card class="p-4" style="min-width: 300px;">
+    <mat-card-title class="text-center">Вход в систему</mat-card-title>
+    <mat-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100 mb-3">
+          <mat-label>Имя пользователя</mat-label>
+          <input
+            matInput
+            type="text"
+            name="username"
+            [(ngModel)]="username"
+            required
+            placeholder="Введите имя пользователя"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="w-100 mb-3">
+          <mat-label>Пароль</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            placeholder="Введите пароль"
+          />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="w-100"
+          [disabled]="loginForm.invalid"
+        >
+          Войти
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
