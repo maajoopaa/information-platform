@@ -35,6 +35,8 @@ export type { PostsPost$Params } from './fn/posts/posts-post';
 export { postsPost } from './fn/posts/posts-post';
 export type { PostsPostIdDelete$Params } from './fn/posts/posts-post-id-delete';
 export { postsPostIdDelete } from './fn/posts/posts-post-id-delete';
+export type { UsersGet$Params } from './fn/users/users-get';
+export { usersGet } from './fn/users/users-get';
 export type { UsersUserIdSettingsPut$Params } from './fn/users/users-user-id-settings-put';
 export { usersUserIdSettingsPut } from './fn/users/users-user-id-settings-put';
 export type { UsersUserIdChatsGet$Params } from './fn/users/users-user-id-chats-get';

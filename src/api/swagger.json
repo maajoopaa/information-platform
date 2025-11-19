@@ -521,6 +521,28 @@
         }
       }
     },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/{userId}/settings": {
       "put": {
         "tags": [
@@ -672,6 +694,10 @@
       "ChatDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "title": {
             "type": "string",
             "nullable": true
@@ -699,6 +725,10 @@
       "CommentDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "text": {
             "type": "string",
             "nullable": true
@@ -794,6 +824,10 @@
       "LikeDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "createdBy": {
             "$ref": "#/components/schemas/UserDto"
           },
@@ -821,6 +855,10 @@
       "MessageDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "bodyHtml": {
             "type": "string",
             "nullable": true
@@ -845,6 +883,10 @@
       "PostDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "title": {
             "type": "string",
             "nullable": true
@@ -934,6 +976,10 @@
       "UserDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "username": {
             "type": "string",
             "nullable": true

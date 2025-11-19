@@ -4,9 +4,9 @@
 import { ImageDto } from '../models/image-dto';
 import { UserDto } from '../models/user-dto';
 export interface MessageDto {
-  id?: string;
   bodyHtml?: string | null;
   createdAt?: string;
   createdBy?: UserDto;
+  id?: string;
   images?: Array<ImageDto> | null;
 }

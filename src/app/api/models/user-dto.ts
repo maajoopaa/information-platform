@@ -5,6 +5,7 @@ import { UserSettingsDto } from '../models/user-settings-dto';
 export interface UserDto {
   birthDate?: string;
   firstName?: string | null;
+  id?: string;
   lastLogin?: string;
   lastName?: string | null;
   userSettings?: UserSettingsDto;
