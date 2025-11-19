@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {NgForOf, NgIf} from '@angular/common';
 import {ChatComponent} from '../chat-component/chat-component';
@@ -31,9 +31,10 @@ import {chatsPost} from '../../api/functions';
   templateUrl: './chats-component.html',
   styleUrl: './chats-component.scss',
 })
-export class ChatsComponent implements OnInit {
+export class ChatsComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
+  private intervalId: any;
 
   public chats: ChatDto[] = []
   public allUsers: UserDto[] = [];
@@ -55,6 +56,13 @@ export class ChatsComponent implements OnInit {
         this.allUsers = res.body;
       })
 
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+
+    this.intervalId = setInterval(() => {
+      this.fetchChats();
+    }, 1000);
 
   }
 
@@ -89,12 +97,33 @@ export class ChatsComponent implements OnInit {
         const messageText = lastMessage.createdBy?.id === currentUserInfo?.user?.id ?
           `Вы: ${lastMessage.bodyHtml}` : `${lastMessage?.createdBy?.firstName}: ${lastMessage.bodyHtml}`;
 
-        return messageText.length > 15 ?
-          messageText.slice(0, 15) + '...' : messageText;
+        return messageText.length > 30 ?
+          messageText.slice(0, 30) + '...' : messageText;
       }
     }
 
     return '';
+  }
+
+  fetchChats(){
+    const currentUserInfo = this.auth.getAuthData();
+
+    if(!currentUserInfo){
+      return;
+    }
+
+    usersUserIdChatsGet(this.http,this.rootUrl,{
+      userId: currentUserInfo?.user?.id || ''
+    }).subscribe({
+      next: (res) => {
+        if(this.chats !== null){
+          this.chats = res.body as ChatDto[];
+        }
+      },
+      error: (error) => {
+        console.error('Ошибка получения чатов:', error);
+      }
+    })
   }
 
   public calculateLastMessageDate(id: string){
@@ -188,5 +217,11 @@ export class ChatsComponent implements OnInit {
 
   onChatClick(chat: ChatDto){
     this.selectedChat = chat;
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 }
