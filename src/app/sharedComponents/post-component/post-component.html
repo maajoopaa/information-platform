@@ -1,52 +1,77 @@
-<mat-card style="max-width: 600px; min-width: 600px" class="mx-auto">
+<mat-card style="max-width: 600px; min-width: 600px" class="mx-auto mb-2">
 
-  <mat-card-header>
-    <mat-card-title>{{post?.createdBy?.firstName}} {{post?.createdBy?.lastName}}</mat-card-title>
-<!--    <mat-card-subtitle>{{post.}}</mat-card-subtitle>-->
+  <mat-card-header class="pb-2">
+    <div class="d-flex align-items-center w-100">
 
-    <button mat-icon-button class="ms-auto">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu>
-      <button mat-menu-item>
-        <mat-icon>delete</mat-icon>
-        <span>Удалить</span>
+      <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 position-relative"
+           style="width: 45px; height: 45px;">
+        <mat-icon class="text-white position-absolute" style="font-size: 22px; top: 50%; left: 50%; transform: translate(-50%, -50%);">person</mat-icon>
+      </div>
+
+      <div class="flex-grow-1">
+        <div class="d-flex align-items-center">
+          <mat-card-title class="mb-0 me-2" style="font-size: 14px;">
+            <strong>{{post?.createdBy?.firstName}} {{post?.createdBy?.lastName}}</strong>
+          </mat-card-title>
+        </div>
+      </div>
+
+      <button mat-icon-button class="text-muted">
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </mat-menu>
+    </div>
   </mat-card-header>
 
-  <mat-card-content>
-    <p class="mb-3" [innerHTML]="post?.bodyHtml">
-    </p>
+  <mat-card-content class="pt-2 pb-3">
+    <div class="px-3">
+      <p class="mb-0 text-dark text-break word-wrap-break-word">{{post?.bodyHtml}}</p>
+    </div>
   </mat-card-content>
 
-  <mat-card-actions class="d-flex justify-content-between align-items-center px-3">
+  <mat-card-actions class="d-flex justify-content-between align-items-center px-3 border-top py-2">
     <div class="d-flex gap-3">
-      <button mat-button color="primary">
-        <mat-icon>thumb_up</mat-icon>
-        {{post?.likes?.length}}
+      <button mat-button [color]="isLikedByCurrentUser() ? 'primary' : ''" (click)="onLikeClick()" class="d-flex align-items-center gap-1 ">
+        <mat-icon style="font-size: 20px;">thumb_up</mat-icon>
+        <span class="small">{{post?.likes?.length}}</span>
       </button>
-      <button mat-button color="primary" (click)="onCommentsButtonClick()">
-        <mat-icon>comment</mat-icon>
-        {{post?.comments?.length}}
+      <button mat-button color="primary" (click)="onCommentsButtonClick()" class="d-flex align-items-center gap-1">
+        <mat-icon style="font-size: 20px;">comment</mat-icon>
+        <span class="small">{{post?.comments?.length}}</span>
       </button>
     </div>
   </mat-card-actions>
 
+  <div *ngIf="isCommentsExpanded" class="border-top">
 
-  <div class="border-top" *ngIf="isCommentsExpanded">
-    <div class="p-3 border-top">
-      <div class="input-group">
+    <div class="p-3 bg-light border-bottom">
+      <div class="d-flex gap-2">
         <input type="text" class="form-control" [(ngModel)]="newCommentText" placeholder="Напишите комментарий...">
-        <button class="btn btn-primary" type="button" (click)="onSubmitCommentClick()">Отправить</button>
+        <button class="btn btn-primary d-flex align-items-center justify-content-center"
+                type="button"
+                (click)="onSubmitCommentClick()"
+                style="width: 47px;">
+          <mat-icon>send</mat-icon>
+        </button>
       </div>
     </div>
 
-    <div class="overflow-auto d-flex flex-column gap-3" style="max-height: 300px;">
-      <app-comment-component *ngFor="let comment of post?.comments"
-        [comment]="comment"
-      >
-      </app-comment-component>
+    <div class="p-3 overflow-auto" style="max-height: 400px;">
+      <div class="d-flex flex-column">
+
+        <app-comment-component
+          *ngFor="let comment of post?.comments"
+          [comment]="comment">
+        </app-comment-component>
+
+        <div *ngIf="!post?.comments?.length" class="text-center text-muted py-5">
+          <mat-icon class="mb-2">chat</mat-icon>
+          <p class="mb-0 small">Пока нет комментариев</p>
+          <p class="small text-muted">Будьте первым, кто оставит комментарий</p>
+        </div>
+
+      </div>
     </div>
+
   </div>
+
 </mat-card>

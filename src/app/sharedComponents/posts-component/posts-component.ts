@@ -17,6 +17,7 @@ import {postsPost} from '../../api/fn/posts/posts-post';
     NgForOf,
     MatButton,
     MatIcon,
+    NgIf,
   ],
   templateUrl: './posts-component.html',
   styleUrl: './posts-component.scss',

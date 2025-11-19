@@ -1,14 +1,21 @@
-<mat-card>
+<div class="d-flex align-items-start mb-3">
 
-  <mat-card-header>
-    <mat-card-title>{{comment?.createdBy?.firstName}} {{comment?.createdBy?.lastName}}</mat-card-title>
-    <mat-card-subtitle>{{comment?.createdAt}}</mat-card-subtitle>
-  </mat-card-header>
+  <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 position-relative"
+       style="width: 45px; height: 45px;">
+    <mat-icon class="text-white position-absolute" style="font-size: 22px; top: 50%; left: 50%; transform: translate(-50%, -50%);">person</mat-icon>
+  </div>
 
-  <mat-card-content>
-    <p class="mb-3">
-      {{comment?.text}}
-    </p>
-  </mat-card-content>
+  <div class="flex-grow-1">
 
-</mat-card>
+    <div class="d-flex align-items-center mb-1">
+      <strong class="me-2 text-dark">{{comment?.createdBy?.firstName}} {{comment?.createdBy?.lastName}}</strong>
+      <small class="text-muted">{{formatMessageTime(comment?.createdAt || '')}}</small>
+    </div>
+
+    <div class="bg-light rounded-3 px-3 py-2">
+      <p class="mb-0 text-dark text-break">{{comment?.text}}</p>
+    </div>
+
+  </div>
+
+</div>
