@@ -1,5 +1,5 @@
 <div class="bg-primary text-white p-2">
-  <div class="container-fluid" style="max-width: 80%">
+  <div class="container-fluid" style="width: 80%">
     <div class="d-flex align-items-center justify-content-between">
 
       <div class="d-flex align-items-center">
@@ -48,11 +48,12 @@
 </div>
 
 <div class="d-flex justify-content-center">
-  <div class="row m-0" style="max-width: 80%">
-    <div class="gap-2 col-2">
+
+  <div class="d-flex m-0" style="max-width: 80%; width: 100%;">
+    <div class="d-flex gap-2" style="width: 20%">
       <mat-nav-list>
 
-        <a mat-list-item routerLink="/home" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
+        <a mat-list-item routerLink="" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
           <mat-icon matListItemIcon>home</mat-icon>
           <span matListItemTitle>Главная</span>
         </a>
@@ -67,26 +68,11 @@
           <span matListItemTitle>Чаты</span>
         </a>
 
-<!--        <a mat-list-item routerLink="/friends" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">-->
-<!--          <mat-icon matListItemIcon>group</mat-icon>-->
-<!--          <span matListItemTitle>Друзья</span>-->
-<!--        </a>-->
-
-<!--        <a mat-list-item routerLink="/settings" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">-->
-<!--          <mat-icon matListItemIcon>settings</mat-icon>-->
-<!--          <span matListItemTitle>Настройки</span>-->
-<!--        </a>-->
-
         <mat-divider></mat-divider>
-
-<!--        <a mat-list-item routerLink="/quit" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">-->
-<!--          <mat-icon matListItemIcon>logout</mat-icon>-->
-<!--          <span matListItemTitle>Выйти</span>-->
-<!--        </a>-->
 
       </mat-nav-list>
     </div>
-    <div class="d-flex justify-content-center h-100 mt-3 col-10">
+    <div class="d-flex justify-content-center h-100 mt-3" style="width: 80%">
       <router-outlet></router-outlet>
     </div>
   </div>

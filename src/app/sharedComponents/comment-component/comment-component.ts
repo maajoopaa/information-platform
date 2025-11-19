@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {
     MatCard,
@@ -10,6 +10,7 @@ import {
 } from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatMenu, MatMenuItem} from "@angular/material/menu";
+import {CommentDto} from '../../api/models/comment-dto';
 
 @Component({
   selector: 'app-comment-component',
@@ -31,4 +32,5 @@ import {MatMenu, MatMenuItem} from "@angular/material/menu";
 })
 export class CommentComponent {
 
+  @Input() comment: CommentDto | null = null;
 }

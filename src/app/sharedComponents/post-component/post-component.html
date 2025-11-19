@@ -1,8 +1,8 @@
-<mat-card style="max-width: 600px" class="mx-auto">
+<mat-card style="max-width: 600px; min-width: 600px" class="mx-auto">
 
   <mat-card-header>
-    <mat-card-title>Иван Иванов</mat-card-title>
-    <mat-card-subtitle>2 часа назад</mat-card-subtitle>
+    <mat-card-title>{{post?.createdBy?.firstName}} {{post?.createdBy?.lastName}}</mat-card-title>
+<!--    <mat-card-subtitle>{{post.}}</mat-card-subtitle>-->
 
     <button mat-icon-button class="ms-auto">
       <mat-icon>more_vert</mat-icon>
@@ -16,8 +16,7 @@
   </mat-card-header>
 
   <mat-card-content>
-    <p class="mb-3">
-      Это пример текста поста. Здесь пользователь делится своими мыслями, новостями или интересной информацией.
+    <p class="mb-3" [innerHTML]="post?.bodyHtml">
     </p>
   </mat-card-content>
 
@@ -25,15 +24,29 @@
     <div class="d-flex gap-3">
       <button mat-button color="primary">
         <mat-icon>thumb_up</mat-icon>
-        125
+        {{post?.likes?.length}}
       </button>
       <button mat-button color="primary" (click)="onCommentsButtonClick()">
         <mat-icon>comment</mat-icon>
-        23
+        {{post?.comments?.length}}
       </button>
     </div>
   </mat-card-actions>
 
 
-  <app-comments-component *ngIf="isCommentsExpanded"></app-comments-component>
+  <div class="border-top" *ngIf="isCommentsExpanded">
+    <div class="p-3 border-top">
+      <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="newCommentText" placeholder="Напишите комментарий...">
+        <button class="btn btn-primary" type="button" (click)="onSubmitCommentClick()">Отправить</button>
+      </div>
+    </div>
+
+    <div class="overflow-auto d-flex flex-column gap-3" style="max-height: 300px;">
+      <app-comment-component *ngFor="let comment of post?.comments"
+        [comment]="comment"
+      >
+      </app-comment-component>
+    </div>
+  </div>
 </mat-card>

@@ -3,14 +3,17 @@
   <div class="row row-cols-1 g-4 mt-1">
 
     <div class="col d-flex justify-content-center align-items-center">
-      <button mat-raised-button color="primary">
+      <button mat-raised-button color="primary" (click)="onAddPostButtonClick()">
         <mat-icon>add</mat-icon>
         Добавить пост
       </button>
     </div>
 
-    <div class="col" *ngFor="let number of numbers">
-      <app-post-component (click)="onCommentsButtonClick()"></app-post-component>
+    <div class="col" *ngFor="let post of posts">
+      <app-post-component
+        (click)="onCommentsButtonClick()"
+        [post]="post"
+      ></app-post-component>
     </div>
   </div>
 
