@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Создать чат</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="chatForm">
+
+    <mat-form-field class="w-100 mb-3" *ngIf="chatForm.get('isGroup')?.value">
+      <mat-label>Введите название чата</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="title"
+        placeholder="Название чата"
+      />
+    </mat-form-field>
+
+    <div class="mb-3">
+      <mat-checkbox formControlName="isGroup">
+        Это группа?
+      </mat-checkbox>
+    </div>
+
+    <mat-form-field class="w-100 mb-3">
+      <mat-label>Добавить участников</mat-label>
+
+      <input
+        matInput
+        [matChipInputFor]="chipGrid"
+        [formControl]="userSearchControl"
+        [matAutocomplete]="auto"
+        placeholder="Начните вводить имя..."
+      >
+
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onUserSelected($event)">
+        <mat-option
+          *ngFor="let user of filteredUsers | async"
+          [value]="user">
+          {{ user.username }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-chip-grid #chipGrid>
+      <mat-chip-row
+        *ngFor="let user of selectedParticipants"
+        (removed)="removeUser(user)">
+        {{ user.username }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    </mat-chip-grid>
+
+    <div *ngIf="selectedParticipants.length === 0" class="text-muted small mb-3">
+      Нет выбранных участников
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Отмена</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="createChat()"
+    [disabled]="!chatForm.valid">
+    Создать
+  </button>
+</mat-dialog-actions>

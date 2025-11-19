@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Создать пост</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="postForm">
+
+    <mat-form-field class="w-100 mb-3">
+      <mat-label>Опишите ваше пост</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="title"
+        placeholder="Поделитесь своими мыслями..."
+      />
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-3">
+      <mat-label>Что у вас нового?</mat-label>
+      <textarea
+        matInput
+        formControlName="bodyHtml"
+        placeholder="Поделитесь своими мыслями..."
+        rows="5">
+      </textarea>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Отмена</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="createPost()"
+    [disabled]="!postForm.valid">
+    Опубликовать
+  </button>
+</mat-dialog-actions>

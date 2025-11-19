@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentsComponent } from './comments-component';
+import { AddPostDialogComponent } from './add-post-dialog-component';
 
-describe('CommentsComponent', () => {
-  let component: CommentsComponent;
-  let fixture: ComponentFixture<CommentsComponent>;
+describe('AddPostDialogComponent', () => {
+  let component: AddPostDialogComponent;
+  let fixture: ComponentFixture<AddPostDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommentsComponent]
+      imports: [AddPostDialogComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CommentsComponent);
+    fixture = TestBed.createComponent(AddPostDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
