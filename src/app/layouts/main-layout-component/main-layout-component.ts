@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MatDivider, MatListItem, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {NgClass, NgIf} from '@angular/common';
@@ -33,7 +33,7 @@ export class MainLayoutComponent {
   public isAuthenticated: boolean = false;
   public currentUser: UserDto | null = null;
 
-  constructor(private auth: AuthService) {
+  constructor(private auth: AuthService, private router: Router) {
     const userInformation = auth.getAuthData();
 
     if(userInformation){
@@ -52,5 +52,6 @@ export class MainLayoutComponent {
   onLogoutButtonClick(){
     this.auth.clearAuthData();
     this.isAuthenticated = false;
+    this.router.navigate(['']);
   }
 }
