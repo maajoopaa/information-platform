@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {MatIconButton} from '@angular/material/button';
 
@@ -8,12 +8,11 @@ export type NotificationStatus = 'success' | 'warn' | 'error' | 'info';
   selector: 'app-notification-component',
   imports: [
     MatIcon,
-    MatIconButton
   ],
   templateUrl: './notification-component.html',
   styleUrl: './notification-component.scss',
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit {
   @Input() message: string = '';
   @Input() status: NotificationStatus = 'info';
   @Input() autoClose: boolean = true;
@@ -39,17 +38,27 @@ export class NotificationComponent {
     }
   }
 
-  getStatusClasses(): string {
+  getAlertClasses(): string {
     switch (this.status) {
       case 'success':
-        return 'bg-success text-white';
+        return 'alert-success';
       case 'warn':
-        return 'bg-warning text-dark';
+        return 'alert-warning';
       case 'error':
-        return 'bg-danger text-white';
+        return 'alert-danger';
       case 'info':
       default:
-        return 'bg-info text-dark';
+        return 'alert-info';
+    }
+  }
+
+  getStatusTitle(): string {
+    switch (this.status) {
+      case 'success': return 'Успешно!';
+      case 'warn': return 'Внимание!';
+      case 'error': return 'Ошибка!';
+      case 'info':
+      default: return 'Информация';
     }
   }
 

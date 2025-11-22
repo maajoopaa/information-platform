@@ -1,14 +1,12 @@
-<div class="position-fixed top-0 end-0 m-3" style="z-index: 1000; min-width: 300px; max-width: 500px;">
-  <div class="d-flex align-items-center p-3 rounded shadow"
-       [class]="getStatusClasses()">
-
-    <mat-icon class="me-2 flex-shrink-0">{{ getStatusIcon() }}</mat-icon>
-
-    <span class="flex-grow-1">{{ message }}</span>
-
-    <button mat-icon-button class="flex-shrink-0 ms-2" (click)="onClose()">
-      <mat-icon>close</mat-icon>
-    </button>
-
+<div class="position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 1050;">
+  <div class="alert alert-dismissible fade show shadow" role="alert" [class]="getAlertClasses()">
+    <div class="d-flex align-items-center">
+      <mat-icon class="me-3">{{ getStatusIcon() }}</mat-icon>
+      <div class="flex-grow-1">
+        <strong class="me-2">{{ getStatusTitle() }}</strong>
+        {{ message }}
+      </div>
+      <button type="button" class="btn-close" (click)="onClose()"></button>
+    </div>
   </div>
 </div>
