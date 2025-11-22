@@ -5,6 +5,7 @@ import { MessageDto } from '../models/message-dto';
 import { UserDto } from '../models/user-dto';
 export interface ChatDto {
   createdAt?: string;
+  lastUsageAt?: string;
   id?: string;
   isGroup?: boolean;
   messages?: Array<MessageDto> | null;

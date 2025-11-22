@@ -13,20 +13,23 @@ import {AddChatDialogComponent} from '../../dialogs/add/add-chat-dialog-componen
 import {usersGet} from '../../api/fn/users/users-get';
 import {UserDto} from '../../api/models/user-dto';
 import {chatsPost} from '../../api/functions';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatFormField} from '@angular/material/form-field';
+import {MatInput, MatLabel} from '@angular/material/input';
 
 @Component({
   selector: 'app-chats-component',
   imports: [
-    MatCard,
-    MatCardContent,
-    MatCardHeader,
-    MatCardSubtitle,
-    MatCardTitle,
     NgForOf,
     ChatComponent,
     NgIf,
     MatIcon,
-    MatButton
+    MatButton,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    FormsModule
   ],
   templateUrl: './chats-component.html',
   styleUrl: './chats-component.scss',
@@ -36,8 +39,10 @@ export class ChatsComponent implements OnInit {
   private rootUrl = 'https://localhost:7053';
 
   public chats: ChatDto[] = []
+  public filteredChats: ChatDto[] = []
   public allUsers: UserDto[] = [];
   public selectedChat: ChatDto | null = null;
+  public searchQuery: string = '';
   constructor(private auth: AuthService,
               private dialog: MatDialog) {
   }
@@ -55,6 +60,7 @@ export class ChatsComponent implements OnInit {
     usersUserIdChatsGet(this.http,this.rootUrl,{userId: userInformation?.user?.id || ''})
       .subscribe(res => {
         this.chats = res.body;
+        this.filteredChats = this.chats;
       });
 
     usersGet(this.http,this.rootUrl)
@@ -81,6 +87,10 @@ export class ChatsComponent implements OnInit {
     }
 
     return '';
+  }
+
+  onChangeSearchQuery(){
+    this.filteredChats = this.chats.filter(x => this.calculateMessageTitle(x.id || '').toLowerCase().includes(this.searchQuery));
   }
 
   public getSubstrText(text: string, countOfSymbols: number){
@@ -191,12 +201,22 @@ export class ChatsComponent implements OnInit {
     }).subscribe({
       next: (res) => {
         this.chats = [...this.chats,res.body];
+        this.filteredChats = this.chats;
+        this.searchQuery = '';
         console.log('Чат создан:', res);
       },
       error: (error) => {
         console.error('Ошибка создания чата:', error);
       }
     })
+  }
+
+  public orderByLastUsage(chats: ChatDto[]){
+    return chats.sort((a, b) => {
+      const dateA = a.lastUsageAt ? new Date(a.lastUsageAt).getTime() : 0;
+      const dateB = b.lastUsageAt ? new Date(b.lastUsageAt).getTime() : 0;
+      return dateB - dateA;
+    });
   }
 
   onChatClick(chat: ChatDto){

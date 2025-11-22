@@ -1,12 +1,10 @@
 import {
+  AfterViewChecked,
   Component,
   ElementRef,
   inject,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {MessageComponent} from '../message-component/message-component';
@@ -32,7 +30,7 @@ import {chatsChatIdMessagesGet} from '../../api/fn/chats/chats-chat-id-messages-
   templateUrl: './chat-component.html',
   styleUrl: './chat-component.scss',
 })
-export class ChatComponent {
+export class ChatComponent implements AfterViewChecked, OnChanges{
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
@@ -104,6 +102,7 @@ export class ChatComponent {
         this.newMessageText = '';
         if(this.chat?.messages){
           this.chat.messages = [...this.chat?.messages, res.body];
+          this.chat.lastUsageAt = new Date().toISOString();
         }
         this.shouldScrollToBottom = true;
         console.log('Сообщение отправлено:', res);
