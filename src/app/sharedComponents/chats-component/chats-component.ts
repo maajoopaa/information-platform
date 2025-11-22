@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnDestroy, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} from "@angular/material/card";
 import {NgForOf, NgIf} from '@angular/common';
 import {ChatComponent} from '../chat-component/chat-component';
@@ -42,6 +42,13 @@ export class ChatsComponent implements OnInit {
               private dialog: MatDialog) {
   }
 
+  @HostListener('document:keydown.escape')
+  onEscapePressed() {
+    if (this.selectedChat) {
+      this.selectedChat = null;
+    }
+  }
+
   ngOnInit() {
     const userInformation = this.auth.getAuthData();
 
@@ -61,7 +68,7 @@ export class ChatsComponent implements OnInit {
 
     if(chat){
       if(chat.isGroup){
-        return chat.title;
+        return this.getSubstrText(chat.title || '',15);
       }
 
       const currentUserInfo = this.auth.getAuthData();
@@ -69,11 +76,16 @@ export class ChatsComponent implements OnInit {
       const chatParticipants = chat.participants?.filter(x => x.id !== currentUserInfo?.user?.id);
 
       if(chatParticipants && chatParticipants.length > 0){
-        return `${chatParticipants[0].firstName} ${chatParticipants[0].lastName}`;
+        return this.getSubstrText(`${chatParticipants[0].firstName} ${chatParticipants[0].lastName}`,15);
       }
     }
 
     return '';
+  }
+
+  public getSubstrText(text: string, countOfSymbols: number){
+    return text.length > countOfSymbols ?
+      text.slice(0, countOfSymbols) + '...' : text;
   }
 
   public calculateMessageText(id: string) {
@@ -87,8 +99,7 @@ export class ChatsComponent implements OnInit {
         const messageText = lastMessage.createdBy?.id === currentUserInfo?.user?.id ?
           `Вы: ${lastMessage.bodyHtml}` : `${lastMessage?.createdBy?.firstName}: ${lastMessage.bodyHtml}`;
 
-        return messageText.length > 30 ?
-          messageText.slice(0, 30) + '...' : messageText;
+        return this.getSubstrText(messageText,30);
       }
     }
 
