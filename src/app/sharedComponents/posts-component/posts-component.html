@@ -5,14 +5,37 @@
     <div class="p-3 border-bottom bg-light" style="width: 600px">
       <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0 fw-bold">Посты</h5>
-        <button mat-raised-button color="primary" (click)="onAddPostButtonClick()" class="d-flex align-items-center gap-1" *ngIf="isCreateButtonEnabled">
-          <mat-icon style="font-size: 18px;">add</mat-icon>
-          <span>Создать</span>
-        </button>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between mt-4">
+        <div class="d-flex align-items-center pt-2 gap-2">
+          <mat-form-field appearance="outline" style="width: 200px;">
+            <mat-label>Сортировать по:</mat-label>
+            <mat-select [(value)]="sortBy">
+              <mat-option value="date">Дате</mat-option>
+              <mat-option value="popularity">Популярности</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-icon-button
+                  (click)="toggleSortDirection()"
+                  [class.text-primary]="true"
+                  title="Изменить направление сортировки">
+            <mat-icon>
+              {{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+            </mat-icon>
+          </button>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" (click)="onAddPostButtonClick()" class="d-flex align-items-center gap-1" *ngIf="isCreateButtonEnabled">
+            <mat-icon style="font-size: 18px;">add</mat-icon>
+            <span>Создать</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="col" *ngFor="let post of posts">
+    <div class="col" *ngFor="let post of getSortedPosts()">
       <app-post-component
         (click)="onCommentsButtonClick()"
         [post]="post"
