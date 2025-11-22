@@ -1,4 +1,14 @@
-import {Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MessageComponent} from '../message-component/message-component';
 import {NgForOf, NgIf} from '@angular/common';
 import {ChatDto} from '../../api/models/chat-dto';
@@ -25,13 +35,27 @@ import {chatsChatIdMessagesGet} from '../../api/fn/chats/chats-chat-id-messages-
 export class ChatComponent {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  private shouldScrollToBottom = false;
 
   public newMessageText: string = '';
-
   constructor(private auth: AuthService) {
   }
 
   @Input() chat: ChatDto | null = null;
+
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+      this.shouldScrollToBottom = false;
+    }
+  }
+
+  ngOnChanges() {
+    if (this.chat) {
+      setTimeout(() => this.scrollToBottom(), 0);
+    }
+  }
 
   public calculateMessageTitle(){
     if(this.chat){
@@ -81,11 +105,26 @@ export class ChatComponent {
         if(this.chat?.messages){
           this.chat.messages = [...this.chat?.messages, res.body];
         }
+        this.shouldScrollToBottom = true;
         console.log('Сообщение отправлено:', res);
       },
       error: (error) => {
         console.error('Ошибка отправки сообщения:', error);
       }
     })
+  }
+
+  private scrollToBottom(): void {
+    try {
+      if (this.messagesContainer) {
+        const element = this.messagesContainer.nativeElement;
+        element.scrollTo({
+          top: element.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    } catch (err) {
+      console.error('Scroll to bottom error:', err);
+    }
   }
 }
