@@ -157,6 +157,14 @@ export class PostComponent{
     })
   }
 
+  public sortCommentsByCreatedDate(comments: CommentDto[]){
+    return this.post?.comments?.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+  }
+
   private deleteLike(existedLikeId: string){
     likesLikeIdDelete(this.http,this.rootUrl,{
       likeId: existedLikeId

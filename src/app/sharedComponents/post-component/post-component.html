@@ -70,7 +70,7 @@
       <div class="d-flex flex-column">
 
         <app-comment-component
-          *ngFor="let comment of post?.comments"
+          *ngFor="let comment of sortCommentsByCreatedDate(post?.comments || [])"
           [comment]="comment">
         </app-comment-component>
 
