@@ -40,7 +40,6 @@ export class ProfileComponent implements OnInit {
   public currentUser: UserDto | null = null;
   public userFromRequest: UserDto | null = null;
   public userFromRequestPosts: PostDto[] = [];
-  public userFromRequestLikesCount: number = 0;
 
   constructor(private auth: AuthService,
               private route: ActivatedRoute) {
@@ -88,15 +87,18 @@ export class ProfileComponent implements OnInit {
     }).subscribe({
       next: res => {
         this.userFromRequestPosts = res.body || [];
-        this.userFromRequestLikesCount = this.userFromRequestPosts.reduce(
-          (sum, x) => sum + (x.likes?.length || 0),
-          0
-        );
       },
       error: err => {
         console.error('Ошибка получения постов:', err);
       }
     });
+  }
+
+  public calculateLikesCount(){
+    return this.userFromRequestPosts?.reduce(
+      (sum, x) => sum + (x.likes?.length || 0),
+      0
+    );
   }
 
   public onPostCreated(post: PostDto) {
