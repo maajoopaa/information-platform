@@ -25,10 +25,6 @@
             <mat-icon>account_circle</mat-icon>
             <span>Профиль</span>
           </button>
-          <button mat-menu-item>
-            <mat-icon>settings</mat-icon>
-            <span>Настройки</span>
-          </button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="onLogoutButtonClick()">
             <mat-icon>logout</mat-icon>
@@ -37,10 +33,13 @@
         </mat-menu>
       </div>
       <div class="position-relative" *ngIf="!isAuthenticated">
-        <a mat-list-item routerLink="/login" (click)="onToggleMenuClick()" routerLinkActive="active" class="align-items-center p-2 gap-2">
-          <mat-icon matListItemIcon>login</mat-icon>
-          <span matListItemTitle>Войти</span>
-        </a>
+        <button mat-stroked-button
+                color="accent"
+                routerLink="/login"
+                class="text-white d-flex align-items-center gap-1">
+          <mat-icon style="font-size: 18px;">login</mat-icon>
+          <span>Войти</span>
+        </button>
       </div>
 
     </div>

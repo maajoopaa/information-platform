@@ -4,7 +4,7 @@ import {MatDivider, MatListItem, MatNavList} from '@angular/material/list';
 import {MatIcon} from '@angular/material/icon';
 import {NgClass, NgIf} from '@angular/common';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {AuthService} from '../../services/auth-service';
 import {UserDto} from '../../api/models/user-dto';
 
@@ -22,7 +22,8 @@ import {UserDto} from '../../api/models/user-dto';
     MatMenuTrigger,
     MatIconButton,
     MatMenuItem,
-    NgIf
+    NgIf,
+    MatButton
   ],
   templateUrl: './main-layout-component.html',
   styleUrl: './main-layout-component.scss',
