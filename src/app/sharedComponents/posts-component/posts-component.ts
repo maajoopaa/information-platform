@@ -13,6 +13,8 @@ import {CommentComponent} from '../comment-component/comment-component';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatSelect} from '@angular/material/select';
 import {MatOption} from '@angular/material/select';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-posts-component',
@@ -28,6 +30,7 @@ import {MatOption} from '@angular/material/select';
     MatOption,
     MatIconButton,
     MatLabel,
+    NotificationComponent,
   ],
   templateUrl: './posts-component.html',
   styleUrl: './posts-component.scss',
@@ -40,8 +43,11 @@ export class PostsComponent {
   sortBy: 'date' | 'popularity' = 'date';
   sortDirection: 'asc' | 'desc' = 'desc';
   sortedPosts: PostDto[] = [];
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog,private router: Router) {
   }
 
   @Input() posts: PostDto[] = [];
@@ -83,10 +89,16 @@ export class PostsComponent {
           this.posts = [...this.posts,res.body];
           this.sortedPosts = this.posts;
           this.postCreated.emit(res.body);
+          this.showNotification('Пост успешно создан!',"success");
           console.log('Пост создан:', res);
         }
       },
       error: (error) => {
+        if(error.status === 401){
+          this.router.navigate(['login']);
+          return;
+        }
+        this.showNotification(error.error,"error");
         console.error('Ошибка создания поста:', error);
       }
     })
@@ -117,5 +129,15 @@ export class PostsComponent {
   public onPostDeleted(postId:string){
     this.posts = this.posts.filter(post => post.id !== postId);
     this.sortedPosts = this.posts;
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }

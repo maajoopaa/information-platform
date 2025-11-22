@@ -10,6 +10,8 @@ import {authorizationLoginPost} from '../../api/fn/authorization/authorization-l
 import {AuthService} from '../../services/auth-service';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-login-component',
@@ -24,7 +26,9 @@ import {MatIcon} from '@angular/material/icon';
     MatInput,
     RouterLink,
     MatCardHeader,
-    MatIcon
+    MatIcon,
+    NotificationComponent,
+    NgIf
   ],
   templateUrl: './login-component.html',
   styleUrl: './login-component.scss',
@@ -35,6 +39,10 @@ export class LoginComponent {
 
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
+
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
 
   constructor(private auth: AuthService,
               private router: Router){
@@ -52,9 +60,25 @@ export class LoginComponent {
         username: this.username,
         password: this.password
       }
-    }).subscribe(res => {
-      this.auth.setAuthData(res.body);
-      this.router.navigate(['']);
+    }).subscribe({
+      next: (res) => {
+        this.auth.setAuthData(res.body);
+        this.router.navigate(['']);
+      },
+        error: (error) => {
+        this.showNotification(error.error,"error");
+        console.error('Ошибка авторизации:', error);
+      }
     });
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }

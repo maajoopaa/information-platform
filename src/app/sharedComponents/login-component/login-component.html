@@ -46,3 +46,13 @@
 
   </mat-card>
 </div>
+
+
+<app-notification-component
+  *ngIf="isShowNotification"
+  [message]="notificationMessage"
+  [status]="notificationStatus"
+  [autoClose]="true"
+  [duration]="2000"
+  (closed)="onNotificationClosed()">
+</app-notification-component>

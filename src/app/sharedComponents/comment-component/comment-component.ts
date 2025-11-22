@@ -12,22 +12,14 @@ import {MatIcon} from "@angular/material/icon";
 import {MatMenu, MatMenuItem} from "@angular/material/menu";
 import {CommentDto} from '../../api/models/comment-dto';
 import {RouterLink} from '@angular/router';
+import {NotificationComponent} from '../notification-component/notification-component';
 
 @Component({
   selector: 'app-comment-component',
   imports: [
-    MatButton,
-    MatCard,
-    MatCardActions,
-    MatCardContent,
-    MatCardHeader,
-    MatCardSubtitle,
-    MatCardTitle,
     MatIcon,
-    MatIconButton,
-    MatMenu,
-    MatMenuItem,
-    RouterLink
+    RouterLink,
+    NotificationComponent
   ],
   templateUrl: './comment-component.html',
   styleUrl: './comment-component.scss',

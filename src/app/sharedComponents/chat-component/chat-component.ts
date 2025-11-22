@@ -16,7 +16,7 @@ import {HttpClient} from '@angular/common/http';
 import {messagesPost} from '../../api/fn/messages/messages-post';
 import {FormsModule} from '@angular/forms';
 import {MatIcon} from '@angular/material/icon';
-import {chatsChatIdMessagesGet} from '../../api/fn/chats/chats-chat-id-messages-get';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
 
 @Component({
   selector: 'app-chat-component',
@@ -26,6 +26,7 @@ import {chatsChatIdMessagesGet} from '../../api/fn/chats/chats-chat-id-messages-
     FormsModule,
     NgIf,
     MatIcon,
+    NotificationComponent,
   ],
   templateUrl: './chat-component.html',
   styleUrl: './chat-component.scss',
@@ -37,6 +38,9 @@ export class ChatComponent implements AfterViewChecked, OnChanges{
   private shouldScrollToBottom = false;
 
   public newMessageText: string = '';
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
   constructor(private auth: AuthService) {
   }
 
@@ -108,6 +112,7 @@ export class ChatComponent implements AfterViewChecked, OnChanges{
         console.log('Сообщение отправлено:', res);
       },
       error: (error) => {
+        this.showNotification(error.error,"error");
         console.error('Ошибка отправки сообщения:', error);
       }
     })
@@ -125,5 +130,15 @@ export class ChatComponent implements AfterViewChecked, OnChanges{
     } catch (err) {
       console.error('Scroll to bottom error:', err);
     }
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }

@@ -16,6 +16,7 @@ import {chatsPost} from '../../api/functions';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
 import {MatInput, MatLabel} from '@angular/material/input';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
 
 @Component({
   selector: 'app-chats-component',
@@ -29,7 +30,8 @@ import {MatInput, MatLabel} from '@angular/material/input';
     MatFormField,
     MatInput,
     MatLabel,
-    FormsModule
+    FormsModule,
+    NotificationComponent
   ],
   templateUrl: './chats-component.html',
   styleUrl: './chats-component.scss',
@@ -38,6 +40,9 @@ export class ChatsComponent implements OnInit {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
 
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
   public chats: ChatDto[] = []
   public filteredChats: ChatDto[] = []
   public allUsers: UserDto[] = [];
@@ -206,6 +211,7 @@ export class ChatsComponent implements OnInit {
         console.log('Чат создан:', res);
       },
       error: (error) => {
+        this.showNotification(error.error,"error");
         console.error('Ошибка создания чата:', error);
       }
     })
@@ -221,5 +227,15 @@ export class ChatsComponent implements OnInit {
 
   onChatClick(chat: ChatDto){
     this.selectedChat = chat;
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }

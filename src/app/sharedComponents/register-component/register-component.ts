@@ -13,6 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {AuthService} from '../../services/auth-service';
 import {authorizationRegisterPost} from '../../api/fn/authorization/authorization-register-post';
 import {HttpClient} from '@angular/common/http';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-register-component',
@@ -33,7 +35,9 @@ import {HttpClient} from '@angular/common/http';
     MatStepperPrevious,
     MatStepperNext,
     RouterLink,
-    MatDatepickerModule
+    MatDatepickerModule,
+    NotificationComponent,
+    NgIf
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './register-component.html',
@@ -44,6 +48,9 @@ export class RegisterComponent implements OnInit{
   private rootUrl = 'https://localhost:7053';
   personalForm!: FormGroup;
   accountForm!: FormGroup;
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
 
   constructor(private fb: FormBuilder, private router: Router,
               private auth: AuthService) {
@@ -94,8 +101,19 @@ export class RegisterComponent implements OnInit{
         }
       },
       error: (error) => {
+        this.showNotification(error.error,"error");
         console.error('Ошибка регистрации:', error);
       }
     })
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }

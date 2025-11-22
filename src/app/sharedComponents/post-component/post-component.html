@@ -4,7 +4,7 @@
     <div class="d-flex align-items-center w-100">
 
       <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 position-relative"
-           style="width: 45px; height: 45px;"
+           style="width: 45px; height: 45px;cursor: pointer;"
            [routerLink]="['users',post?.createdBy?.id,'profile']"
       >
         <mat-icon class="text-white position-absolute" style="font-size: 22px; top: 50%; left: 50%; transform: translate(-50%, -50%);">person</mat-icon>
@@ -12,7 +12,7 @@
 
       <div class="flex-grow-1">
         <div class="d-flex align-items-center">
-          <mat-card-title class="mb-0 me-2" style="font-size: 14px;">
+          <mat-card-title class="mb-0 me-2" style="font-size: 14px;cursor: pointer;" [routerLink]="['users',post?.createdBy?.id,'profile']">
             <strong>{{post?.createdBy?.firstName}} {{post?.createdBy?.lastName}}</strong>
           </mat-card-title>
           <small class="text-muted mb-0 me-2" style="font-size: 12px;">
@@ -56,7 +56,13 @@
 
     <div class="p-3 bg-light border-bottom">
       <div class="d-flex gap-2">
-        <input type="text" class="form-control" [(ngModel)]="newCommentText" placeholder="Напишите комментарий...">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newCommentText"
+          placeholder="Напишите комментарий..."
+          (keydown.enter)="onSubmitCommentClick()"
+        >
         <button class="btn btn-primary d-flex align-items-center justify-content-center"
                 type="button"
                 (click)="onSubmitCommentClick()"
@@ -86,3 +92,13 @@
   </div>
 
 </mat-card>
+
+
+<app-notification-component
+  *ngIf="isShowNotification"
+  [message]="notificationMessage"
+  [status]="notificationStatus"
+  [autoClose]="true"
+  [duration]="2000"
+  (closed)="onNotificationClosed()">
+</app-notification-component>

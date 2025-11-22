@@ -26,10 +26,11 @@ import {
 } from '../../api/functions';
 import {CommentDto} from '../../api/models/comment-dto';
 import {LikeDto} from '../../api/models/like-dto';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {UserDto} from '../../api/models/user-dto';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../dialogs/confirm-dialog-component/confirm-dialog-component';
+import {NotificationComponent, NotificationStatus} from '../notification-component/notification-component';
 
 @Component({
   selector: 'app-post-component',
@@ -50,7 +51,8 @@ import {ConfirmDialogComponent} from '../../dialogs/confirm-dialog-component/con
     FormsModule,
     MatCardSubtitle,
     MatMenuTrigger,
-    RouterLink
+    RouterLink,
+    NotificationComponent
   ],
   templateUrl: './post-component.html',
   styleUrl: './post-component.scss',
@@ -62,8 +64,11 @@ export class PostComponent{
   public isCommentsExpanded: boolean = false;
   public newCommentText: string = '';
   public currentUser: UserDto | null = null;
+  isShowNotification = false;
+  notificationMessage = '';
+  notificationStatus: NotificationStatus = 'info';
 
-  constructor(private auth: AuthService,private dialog: MatDialog) {
+  constructor(private auth: AuthService,private dialog: MatDialog,private router: Router) {
     const authData = this.auth.getAuthData();
 
     if(authData){
@@ -101,6 +106,11 @@ export class PostComponent{
         console.log('Комментарий создан:', res);
       },
       error: (error) => {
+        if(error.status === 401){
+          this.router.navigate(['login']);
+          return;
+        }
+        this.showNotification(error.error,"error");
         console.error('Ошибка создания комментария:', error);
       }
     })
@@ -152,6 +162,11 @@ export class PostComponent{
         console.log('Лайк добавлен:', res);
       },
       error: (error) => {
+        if(error.status === 401){
+          this.router.navigate(['login']);
+          return;
+        }
+        this.showNotification(error.error,"error");
         console.error('Ошибка добавления лайка:', error);
       }
     })
@@ -180,6 +195,7 @@ export class PostComponent{
           console.log('Лайк убран:', res);
         },
         error: (error) => {
+          this.showNotification(error.error,"error");
           console.error('Ошибка удаления лайка:', error);
         }
       })
@@ -233,8 +249,19 @@ export class PostComponent{
         }
       },
       error: (error) => {
+        this.showNotification(error.error,"error");
         console.error('Ошибка удаления поста:', error);
       }
     })
+  }
+
+  private showNotification(message: string, status: NotificationStatus) {
+    this.notificationMessage = message;
+    this.notificationStatus = status;
+    this.isShowNotification = true;
+  }
+
+  onNotificationClosed() {
+    this.isShowNotification = false;
   }
 }
