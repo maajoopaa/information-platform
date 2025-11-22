@@ -22,10 +22,9 @@ import {chatsChatIdMessagesGet} from '../../api/fn/chats/chats-chat-id-messages-
   templateUrl: './chat-component.html',
   styleUrl: './chat-component.scss',
 })
-export class ChatComponent implements OnChanges, OnDestroy{
+export class ChatComponent {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
-  private intervalId: any;
 
   public newMessageText: string = '';
 
@@ -33,37 +32,6 @@ export class ChatComponent implements OnChanges, OnDestroy{
   }
 
   @Input() chat: ChatDto | null = null;
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['chat'] && this.chat) {
-      if (this.intervalId) {
-        clearInterval(this.intervalId);
-      }
-
-      this.intervalId = setInterval(() => {
-        if(this.chat) {
-          this.fetchChatMessages(this.chat.id || '');
-        }
-      }, 1000);
-    }
-  }
-
-  fetchChatMessages(chatId: string) {
-    chatsChatIdMessagesGet(this.http, this.rootUrl, {
-      chatId: chatId,
-    }).subscribe(res => {
-      const messages = res.body as MessageDto[];
-      if (this.chat !== null) {
-        this.chat.messages = messages;
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
 
   public calculateMessageTitle(){
     if(this.chat){
@@ -98,15 +66,22 @@ export class ChatComponent implements OnChanges, OnDestroy{
       return;
     }
 
+    this.addMessage();
+  }
+
+  private addMessage(){
     messagesPost(this.http,this.rootUrl,{
       body:{
         chatId: this.chat?.id,
         bodyHtml: this.newMessageText
       }
     }).subscribe({
-      next: (createdMessage) => {
+      next: (res) => {
         this.newMessageText = '';
-        console.log('Сообщение отправлено:', createdMessage);
+        if(this.chat?.messages){
+          this.chat.messages = [...this.chat?.messages, res.body];
+        }
+        console.log('Сообщение отправлено:', res);
       },
       error: (error) => {
         console.error('Ошибка отправки сообщения:', error);

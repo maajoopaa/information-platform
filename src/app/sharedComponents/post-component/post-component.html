@@ -4,7 +4,9 @@
     <div class="d-flex align-items-center w-100">
 
       <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 position-relative"
-           style="width: 45px; height: 45px;">
+           style="width: 45px; height: 45px;"
+           [routerLink]="['users',post?.createdBy?.id,'profile']"
+      >
         <mat-icon class="text-white position-absolute" style="font-size: 22px; top: 50%; left: 50%; transform: translate(-50%, -50%);">person</mat-icon>
       </div>
 
@@ -13,12 +15,21 @@
           <mat-card-title class="mb-0 me-2" style="font-size: 14px;">
             <strong>{{post?.createdBy?.firstName}} {{post?.createdBy?.lastName}}</strong>
           </mat-card-title>
+          <small class="text-muted mb-0 me-2" style="font-size: 12px;">
+            {{ formatMessageTime(post?.createdAt || '') }}
+          </small>
         </div>
       </div>
 
-      <button mat-icon-button class="text-muted">
+      <button mat-icon-button class="text-muted" [matMenuTriggerFor]="postMenu" *ngIf="this.currentUser?.id === post?.createdBy?.id">
         <mat-icon>more_vert</mat-icon>
       </button>
+      <mat-menu #postMenu="matMenu">
+        <button mat-menu-item (click)="onDeleteClick()">
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Удалить</span>
+        </button>
+      </mat-menu>
     </div>
   </mat-card-header>
 

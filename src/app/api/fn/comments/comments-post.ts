@@ -8,23 +8,24 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { AddCommentRequest } from '../../models/add-comment-request';
+import { CommentDto } from '../../models/comment-dto';
 
 export interface CommentsPost$Params {
       body?: AddCommentRequest
 }
 
-export function commentsPost(http: HttpClient, rootUrl: string, params?: CommentsPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function commentsPost(http: HttpClient, rootUrl: string, params?: CommentsPost$Params, context?: HttpContext): Observable<StrictHttpResponse<CommentDto>> {
   const rb = new RequestBuilder(rootUrl, commentsPost.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<CommentDto>;
     })
   );
 }

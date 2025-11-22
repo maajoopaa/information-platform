@@ -8,6 +8,7 @@ import { UserDto } from '../models/user-dto';
 export interface PostDto {
   bodyHtml?: string | null;
   comments?: Array<CommentDto> | null;
+  createdAt?: string;
   createdBy?: UserDto;
   id?: string;
   images?: Array<ImageDto> | null;

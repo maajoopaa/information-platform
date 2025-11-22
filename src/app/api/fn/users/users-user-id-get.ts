@@ -7,17 +7,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { MessageDto } from '../../models/message-dto';
-import { SendMessageRequest } from '../../models/send-message-request';
+import { UserDto } from '../../models/user-dto';
 
-export interface MessagesPost$Params {
-      body?: SendMessageRequest
+export interface UsersUserIdGet$Params {
+  userId: string;
 }
 
-export function messagesPost(http: HttpClient, rootUrl: string, params?: MessagesPost$Params, context?: HttpContext): Observable<StrictHttpResponse<MessageDto>> {
-  const rb = new RequestBuilder(rootUrl, messagesPost.PATH, 'post');
+export function usersUserIdGet(http: HttpClient, rootUrl: string, params: UsersUserIdGet$Params, context?: HttpContext): Observable<StrictHttpResponse<UserDto>> {
+  const rb = new RequestBuilder(rootUrl, usersUserIdGet.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'application/*+json');
+    rb.path('userId', params.userId, {});
   }
 
   return http.request(
@@ -25,9 +24,9 @@ export function messagesPost(http: HttpClient, rootUrl: string, params?: Message
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<MessageDto>;
+      return r as StrictHttpResponse<UserDto>;
     })
   );
 }
 
-messagesPost.PATH = '/messages';
+usersUserIdGet.PATH = '/users/{userId}';

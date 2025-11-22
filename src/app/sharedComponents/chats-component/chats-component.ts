@@ -31,10 +31,9 @@ import {chatsPost} from '../../api/functions';
   templateUrl: './chats-component.html',
   styleUrl: './chats-component.scss',
 })
-export class ChatsComponent implements OnInit, OnDestroy {
+export class ChatsComponent implements OnInit {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
-  private intervalId: any;
 
   public chats: ChatDto[] = []
   public allUsers: UserDto[] = [];
@@ -55,15 +54,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.allUsers = res.body;
       })
-
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-
-    this.intervalId = setInterval(() => {
-      this.fetchChats();
-    }, 1000);
-
   }
 
   public calculateMessageTitle(id: string){
@@ -86,14 +76,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  public calculateMessageText(id: string){
+  public calculateMessageText(id: string) {
     const chat = this.chats.find(x => x.id === id);
 
-    if(chat){
+    if (chat) {
       const currentUserInfo = this.auth.getAuthData();
 
-      if(chat.messages && chat.messages.length > 0){
-        const lastMessage = chat.messages[chat.messages.length-1];
+      if (chat.messages && chat.messages.length > 0) {
+        const lastMessage = chat.messages[chat.messages.length - 1];
         const messageText = lastMessage.createdBy?.id === currentUserInfo?.user?.id ?
           `Вы: ${lastMessage.bodyHtml}` : `${lastMessage?.createdBy?.firstName}: ${lastMessage.bodyHtml}`;
 
@@ -103,27 +93,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
 
     return '';
-  }
-
-  fetchChats(){
-    const currentUserInfo = this.auth.getAuthData();
-
-    if(!currentUserInfo){
-      return;
-    }
-
-    usersUserIdChatsGet(this.http,this.rootUrl,{
-      userId: currentUserInfo?.user?.id || ''
-    }).subscribe({
-      next: (res) => {
-        if(this.chats !== null){
-          this.chats = res.body as ChatDto[];
-        }
-      },
-      error: (error) => {
-        console.error('Ошибка получения чатов:', error);
-      }
-    })
   }
 
   public calculateLastMessageDate(id: string){
@@ -196,32 +165,30 @@ export class ChatsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed()
       .subscribe(res => {
         if(res){
-          // @ts-ignore
-          chatsPost(this.http,this.rootUrl,{
-            body: {
-              title: res.title,
-              isGroup: res.isGroup,
-              participantIds: res.participants
-            }
-          }).subscribe({
-            next: (createdChat) => {
-              console.log('Чат создан:', createdChat);
-            },
-            error: (error) => {
-              console.error('Ошибка создания чата:', error);
-            }
-          })
+          this.addChat(res.title,res.isGroup,res.participants);
         }
       })
   }
 
-  onChatClick(chat: ChatDto){
-    this.selectedChat = chat;
+  private addChat(title: string | null, isGroup: boolean, participants: string[]){
+    chatsPost(this.http,this.rootUrl,{
+      body: {
+        title: title,
+        isGroup: isGroup,
+        participantIds: participants
+      }
+    }).subscribe({
+      next: (res) => {
+        this.chats = [...this.chats,res.body];
+        console.log('Чат создан:', res);
+      },
+      error: (error) => {
+        console.error('Ошибка создания чата:', error);
+      }
+    })
   }
 
-  ngOnDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+  onChatClick(chat: ChatDto){
+    this.selectedChat = chat;
   }
 }

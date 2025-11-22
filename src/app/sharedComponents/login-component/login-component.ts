@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatFormField} from '@angular/material/form-field';
 import {MatLabel} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
@@ -8,6 +8,8 @@ import {MatInput} from '@angular/material/input';
 import {HttpClient} from '@angular/common/http';
 import {authorizationLoginPost} from '../../api/fn/authorization/authorization-login-post';
 import {AuthService} from '../../services/auth-service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-login-component',
@@ -19,7 +21,10 @@ import {AuthService} from '../../services/auth-service';
     MatLabel,
     FormsModule,
     MatButton,
-    MatInput
+    MatInput,
+    RouterLink,
+    MatCardHeader,
+    MatIcon
   ],
   templateUrl: './login-component.html',
   styleUrl: './login-component.scss',
@@ -31,7 +36,8 @@ export class LoginComponent {
   private http = inject(HttpClient);
   private rootUrl = 'https://localhost:7053';
 
-  constructor(private auth: AuthService){
+  constructor(private auth: AuthService,
+              private router: Router){
 
   }
   onSubmit() {
@@ -48,6 +54,7 @@ export class LoginComponent {
       }
     }).subscribe(res => {
       this.auth.setAuthData(res.body);
+      this.router.navigate(['']);
     });
   }
 }

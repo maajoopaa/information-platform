@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Подтверждение</h2>
+
+<mat-dialog-content>
+  <p>{{ this.message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Отмена</button>
+  <button mat-button color="warn" [mat-dialog-close]="true">
+    Удалить
+  </button>
+</mat-dialog-actions>

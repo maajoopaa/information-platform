@@ -43,3 +43,5 @@ export type { UsersUserIdChatsGet$Params } from './fn/users/users-user-id-chats-
 export { usersUserIdChatsGet } from './fn/users/users-user-id-chats-get';
 export type { UsersUserIdPostsGet$Params } from './fn/users/users-user-id-posts-get';
 export { usersUserIdPostsGet } from './fn/users/users-user-id-posts-get';
+export type { UsersUserIdGet$Params } from './fn/users/users-user-id-get';
+export { usersUserIdGet } from './fn/users/users-user-id-get';

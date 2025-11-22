@@ -1,46 +1,67 @@
-<div class="container-fluid">
-  <div class="d-flex justify-content-center align-items-center mb-3">
-    <mat-card class="p-2 w-100" style="max-width: 600px">
-      <div class="row align-items-center">
+<div class="container py-4 row d-flex justify-content-center">
 
-        <div class="col-auto">
-          <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center"
-               style="width: 100px; height: 100px;">
-            <mat-icon class="text-white" style="font-size: 48px;">person</mat-icon>
-          </div>
+  <mat-card class="mb-4 shadow-sm" style="width:600px">
+
+    <div class="row g-3 align-items-center p-3">
+
+      <div class="col-auto">
+        <div class="rounded-circle bg-primary d-flex justify-content-center align-items-center"
+             style="width: 110px; height: 110px;">
+          <mat-icon class="text-white" style="font-size: 58px;">person</mat-icon>
         </div>
-
-        <div class="col">
-          <h2 class="mb-1">Иван Иванов</h2>
-          <p class="text-muted mb-2">&#64;ivan_ivanov</p>
-          <div class="d-flex gap-4">
-            <div>
-              <strong>125</strong>
-              <div class="text-muted small">друзей</div>
-            </div>
-            <div>
-              <strong>42</strong>
-              <div class="text-muted small">поста</div>
-            </div>
-            <div>
-              <strong>1.2K</strong>
-              <div class="text-muted small">лайков</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-auto">
-          <button mat-raised-button color="primary" class="me-2">
-            <mat-icon>edit</mat-icon>
-            Редактировать
-          </button>
-        </div>
-
       </div>
-    </mat-card>
-  </div>
-  <app-posts-component>
 
+      <div class="col">
+        <h3 class="mb-1 fw-bold">
+          {{ userFromRequest?.firstName }} {{ userFromRequest?.lastName }}
+        </h3>
+
+        <div class="text-secondary mb-3">
+          &#64;{{ userFromRequest?.username }}
+        </div>
+
+        <div class="d-flex gap-4">
+
+          <div class="text-center">
+            <strong class="d-block fs-5">{{ userFromRequestPosts.length }}</strong>
+            <span class="text-muted small">поста</span>
+          </div>
+
+          <div class="text-center">
+            <strong class="d-block fs-5">{{ userFromRequestLikesCount }}</strong>
+            <span class="text-muted small">лайков</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </mat-card>
+
+  <app-posts-component
+    [posts]="userFromRequestPosts"
+    [isCreateButtonEnabled]="currentUser?.id === userFromRequest?.id"
+    (postCreated)="onPostCreated($event)"
+  >
   </app-posts-component>
+
+  <div *ngIf="userFromRequestPosts.length === 0" class="text-center mt-4 d-flex justify-content-center">
+
+    <div *ngIf="currentUser?.id === userFromRequest?.id">
+      <mat-card class="p-4 shadow-sm" style="width: 600px;">
+        <h4 class="mb-2">У вас пока нет постов</h4>
+        <p class="text-muted">Создайте свой первый пост и начните делиться мыслями!</p>
+      </mat-card>
+    </div>
+
+    <div *ngIf="currentUser?.id !== userFromRequest?.id">
+      <mat-card class="p-4 shadow-sm" style="width: 600px;">
+        <h4 class="mb-2">У пользователя пока нет постов</h4>
+        <p class="text-muted">Загляните позже — возможно, он что-то опубликует.</p>
+      </mat-card>
+    </div>
+
+  </div>
 
 </div>

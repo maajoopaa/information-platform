@@ -6,6 +6,7 @@ import {NgClass, NgIf} from '@angular/common';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 import {MatIconButton} from '@angular/material/button';
 import {AuthService} from '../../services/auth-service';
+import {UserDto} from '../../api/models/user-dto';
 
 @Component({
   selector: 'app-main-layout-component',
@@ -29,12 +30,14 @@ import {AuthService} from '../../services/auth-service';
 export class MainLayoutComponent {
   public isCollapsed : boolean = false;
   public isAuthenticated: boolean = false;
+  public currentUser: UserDto | null = null;
 
   constructor(private auth: AuthService) {
     const userInformation = auth.getAuthData();
 
     if(userInformation){
       this.isAuthenticated = true;
+      this.currentUser = userInformation?.user || null;
     }
 
   }
@@ -43,5 +46,10 @@ export class MainLayoutComponent {
     if(!this.isCollapsed){
       this.isCollapsed = true;
     }
+  }
+
+  onLogoutButtonClick(){
+    this.auth.clearAuthData();
+    this.isAuthenticated = false;
   }
 }

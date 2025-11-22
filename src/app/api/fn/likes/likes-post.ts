@@ -8,23 +8,24 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { AddLikeRequest } from '../../models/add-like-request';
+import { LikeDto } from '../../models/like-dto';
 
 export interface LikesPost$Params {
       body?: AddLikeRequest
 }
 
-export function likesPost(http: HttpClient, rootUrl: string, params?: LikesPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function likesPost(http: HttpClient, rootUrl: string, params?: LikesPost$Params, context?: HttpContext): Observable<StrictHttpResponse<LikeDto>> {
   const rb = new RequestBuilder(rootUrl, likesPost.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<LikeDto>;
     })
   );
 }

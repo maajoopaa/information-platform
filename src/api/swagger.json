@@ -140,7 +140,14 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatDto"
+                }
+              }
+            }
           }
         }
       },
@@ -268,7 +275,14 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
           }
         }
       }
@@ -299,7 +313,14 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LikeDto"
+                }
+              }
+            }
           }
         }
       }
@@ -353,7 +374,14 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
+                }
+              }
+            }
           }
         }
       },
@@ -493,7 +521,14 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostDto"
+                }
+              }
+            }
           }
         }
       }
@@ -650,6 +685,36 @@
           }
         }
       }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -704,6 +769,10 @@
           },
           "isGroup": {
             "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           },
           "participants": {
             "type": "array",
@@ -894,6 +963,10 @@
           "bodyHtml": {
             "type": "string",
             "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           },
           "images": {
             "type": "array",
